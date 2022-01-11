@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
-
+# author:waykom1
 import getpass
 import requests
 import time
@@ -21,7 +21,7 @@ def getModExp(key):
     modExpurl = f'http://jwxt.gxust.edu.cn:9600/xtgl/login_getPublicKey.html?time={ntime}&_={ntime-50}'
     modExp = client.get(modExpurl).json()
     # mm
-    JS = open('D:\AppData\PycharmProjects\EduCrawler\crypto_rsa.js').read()
+    JS = open('crypto_rsa.js').read()
     mm = execjs.compile(JS).call('start', modExp['exponent'], modExp['modulus'], key)
     return mm
 def login(user, mm):
@@ -39,7 +39,7 @@ def login(user, mm):
         'Origin': 'http://jwxt.gxust.edu.cn:9600',
         'Referer': 'http://jwxt.gxust.edu.cn:9600/xtgl/login_slogin.html',
         'Upgrade-Insecure-Requests': '1',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36'
+        'User-Agent': ''
     }
     data = f'csrftoken={urllib.parse.quote(csrftoken)}&language=zh_CN&yhm={user}&mm={urllib.parse.quote(mm)}&mm={urllib.parse.quote(mm)}'
     status = client.post(loginurl, headers=headers, data=data)
@@ -187,9 +187,7 @@ if __name__ == '__main__':
     client = requests.session()
     loginurl = 'http://jwxt.gxust.edu.cn:9600/xtgl/login_slogin.html'
     user = input("账号：")
-    password = input("密码：")
-    # password = getpass.getpass("密码:")
-    # login(input("账号："), input("账号："))
+    password = getpass.getpass("密码:")  # 不显示密码
     login(user, password)
 
 
